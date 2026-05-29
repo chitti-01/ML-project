@@ -1,0 +1,9 @@
+fastapi[standard]
+motor
+pydantic
+pydantic-settings
+scikit-learn
+websockets
+python-dotenv
+pandas
+apscheduler
