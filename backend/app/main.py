@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
@@ -9,6 +10,7 @@ from app.services.ml_service import ml_service
 from app.services.chatbot_service import initialize_knowledge_base
 from app.services.scheduler_service import start_scheduler, stop_scheduler
 from app.utils.seeder import seed_db
+from app.services.cctv_service import cctv_service
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -16,6 +18,7 @@ async def lifespan(app: FastAPI):
     await connect_to_mongo()
     await seed_db()
     ml_service.load_model(settings.MODEL_PATH)
+    cctv_service.load_model("models/best_box_detector.pt")
     initialize_knowledge_base()
     start_scheduler()
     yield
@@ -28,6 +31,8 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Set up CORS
 app.add_middleware(

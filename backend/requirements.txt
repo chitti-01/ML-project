@@ -7,3 +7,6 @@ websockets
 python-dotenv
 pandas
 apscheduler
+ultralytics
+opencv-python-headless
+python-multipart

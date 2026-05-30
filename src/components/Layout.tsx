@@ -10,7 +10,8 @@ import {
   Sun, 
   Moon,
   Menu,
-  ShoppingCart
+  ShoppingCart,
+  Camera
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Chatbot } from './Chatbot';
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { path: '/analytics', label: 'Analytics', icon: BarChart3 },
   { path: '/recommendations', label: 'Recommendations', icon: Lightbulb },
   { path: '/orders', label: 'Orders', icon: ShoppingCart },
+  { path: '/cctv-analytics', label: 'CCTV Analytics', icon: Camera },
 ];
 
 export const Layout: React.FC = () => {

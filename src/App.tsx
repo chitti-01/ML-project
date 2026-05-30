@@ -10,6 +10,7 @@ const Forecast = lazy(() => import('./pages/Forecast').then(m => ({ default: m.F
 const Analytics = lazy(() => import('./pages/Analytics').then(m => ({ default: m.Analytics })));
 const Recommendations = lazy(() => import('./pages/Recommendations').then(m => ({ default: m.Recommendations })));
 const Orders = lazy(() => import('./pages/Orders').then(m => ({ default: m.Orders })));
+const CctvAnalytics = lazy(() => import('./pages/CctvAnalytics').then(m => ({ default: m.CctvAnalytics })));
 
 const LoadingFallback = () => (
   <div className="h-full w-full flex items-center justify-center min-h-[300px]">
@@ -31,6 +32,7 @@ function App() {
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/recommendations" element={<Recommendations />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/cctv-analytics" element={<CctvAnalytics />} />
             
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>

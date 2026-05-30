@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.routes import auth, inventory, forecast, analytics, recommendations, video, websockets, chatbot, orders, notifications
+from app.api.routes import auth, inventory, forecast, analytics, recommendations, video, websockets, chatbot, orders, notifications, cctv
 
 api_router = APIRouter()
 
@@ -13,3 +13,4 @@ api_router.include_router(websockets.router, prefix="/ws", tags=["websockets"])
 api_router.include_router(chatbot.router, prefix="/chatbot", tags=["chatbot"])
 api_router.include_router(orders.router, prefix="/orders", tags=["orders"])
 api_router.include_router(notifications.router, prefix="/notifications", tags=["notifications"])
+api_router.include_router(cctv.router, prefix="/cctv", tags=["cctv"])
