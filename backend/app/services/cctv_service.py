@@ -2,7 +2,6 @@ import os
 import cv2
 import uuid
 import numpy as np
-from ultralytics import YOLO
 from fastapi import UploadFile
 
 STATIC_DIR = "static/cctv_output"
@@ -11,23 +10,26 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 class CCTVService:
     def __init__(self):
         self.model = None
+        self.model_path = "models/best_box_detector.pt"
 
-    def load_model(self, model_path: str):
-        if os.path.exists(model_path):
-            self.model = YOLO(model_path)
-            print(f"Loaded YOLO model from {model_path}")
-        else:
-            print(f"Warning: YOLO model not found at {model_path}")
+    def _get_model(self):
+        if self.model is None:
+            if os.path.exists(self.model_path):
+                from ultralytics import YOLO
+                print(f"Lazy loading YOLO model from {self.model_path}...")
+                self.model = YOLO(self.model_path)
+            else:
+                raise Exception(f"YOLO model not found at {self.model_path}")
+        return self.model
 
     async def analyze_image(self, file: UploadFile):
-        if not self.model:
-            raise Exception("YOLO model not loaded")
+        model = self._get_model()
         
         contents = await file.read()
         nparr = np.frombuffer(contents, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        results = self.model(img)
+        results = model(img)
         result = results[0]
 
         total_boxes = len(result.boxes)
@@ -47,8 +49,7 @@ class CCTVService:
         }
 
     async def analyze_video(self, file: UploadFile):
-        if not self.model:
-            raise Exception("YOLO model not loaded")
+        model = self._get_model()
         
         temp_filename = f"temp_{uuid.uuid4()}_{file.filename}"
         with open(temp_filename, "wb") as f:
@@ -80,7 +81,7 @@ class CCTVService:
             if not ret:
                 break
             
-            res = self.model(frame, verbose=False)[0]
+            res = model(frame, verbose=False)[0]
             boxes_count = len(res.boxes)
             conf = float(res.boxes.conf.mean()) if boxes_count > 0 else 0.0
             

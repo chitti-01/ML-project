@@ -18,7 +18,6 @@ async def lifespan(app: FastAPI):
     await connect_to_mongo()
     await seed_db()
     ml_service.load_model(settings.MODEL_PATH)
-    cctv_service.load_model("models/best_box_detector.pt")
     initialize_knowledge_base()
     start_scheduler()
     yield
