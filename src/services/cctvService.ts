@@ -3,7 +3,8 @@ export const cctvService = {
     const formData = new FormData();
     formData.append('file', file);
     
-    const response = await fetch('http://localhost:8000/api/v1/cctv/analyze-image', {
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+    const response = await fetch(`${API_BASE}/cctv/analyze-image`, {
       method: 'POST',
       body: formData,
     });
@@ -18,7 +19,8 @@ export const cctvService = {
     const formData = new FormData();
     formData.append('file', file);
     
-    const response = await fetch('http://localhost:8000/api/v1/cctv/analyze-video', {
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+    const response = await fetch(`${API_BASE}/cctv/analyze-video`, {
       method: 'POST',
       body: formData,
     });

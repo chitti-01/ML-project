@@ -182,21 +182,25 @@ export const CctvAnalytics: React.FC = () => {
           )}
 
           {result?.output_preview_path ? (
-            result.output_preview_path.endsWith('.mp4') ? (
-              <video 
-                src={`http://localhost:8000${result.output_preview_path}`} 
-                controls 
-                autoPlay 
-                loop 
-                className="w-full h-full object-contain"
-              />
-            ) : (
-              <img 
-                src={`http://localhost:8000${result.output_preview_path}`} 
-                alt="Detection Output" 
-                className="w-full h-full object-contain" 
-              />
-            )
+            (() => {
+              const apiRoot = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1').replace('/api/v1', '');
+              const mediaUrl = `${apiRoot}${result.output_preview_path}`;
+              return result.output_preview_path.endsWith('.mp4') ? (
+                <video 
+                  src={mediaUrl} 
+                  controls 
+                  autoPlay 
+                  loop 
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <img 
+                  src={mediaUrl} 
+                  alt="Detection Output" 
+                  className="w-full h-full object-contain" 
+                />
+              );
+            })()
           ) : preview ? (
             file?.type.startsWith('video/') ? (
               <video src={preview} controls className="w-full h-full object-contain opacity-50" />
